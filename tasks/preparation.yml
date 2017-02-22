@@ -1,0 +1,6 @@
+---
+- name: 'installing python-software-properties'
+  apt: name=python-software-properties state=latest update_cache=yes
+
+- apt_repository: 
+    repo: 'ppa:nginx/stable'
