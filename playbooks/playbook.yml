@@ -2,11 +2,16 @@
  - hosts: all
    gather_facts: no
 
+##################### Variables  #######################
    vars_files: 
     - '../vars/password_mysql.yml'
+
+    vars:
+      root_dir: /var/www
     
    tasks:
 
+##################### Security  #######################
    - name: 'ssh default config'
      template: 'src=../templates/ssh/sshd_config.j2 dest=/etc/ssh/sshd_config'
      notify:
@@ -18,8 +23,10 @@
    - name: 'rc.local default config'
      template: 'src=../templates/iptables/rc.local.j2 dest=/etc/rc.local'
 
-   - include: ../tasks/preparation.yml
+##################### Including Files  #######################
+   - include: ../tasks/prepare.yml
 
+##################### Installing Packages  #######################
    - name: 'installing mysql'
      apt: 'name=mysql-server'
      notify: 
@@ -41,6 +48,7 @@
       - 'htop'
       - 'sendmail'
 
+##################### Configuration Services  #######################
    - name: 'nginx default host'
      template: 'src=../templates/nginx/default.j2 dest=/etc/nginx/sites-available/default'
 
@@ -69,17 +77,18 @@
    - name: 'timezone php-cli'
      replace: 'dest=/etc/php5/cli/php.ini regexp="^;date.timezone =$" replace="date.timezone = Europe/Moscow"'
       
+##################### Create Folders  #######################
    - name: 'create /var/www'   
-     file: 'path=/var/www state=directory'
+     file: 'path={{ root_dir }} state=directory'
 
    - name: 'create /var/www/site'
-     file: 'path=/var/www/site state=directory'
+     file: 'path={{ root_dir }}/site state=directory'
 
    - name: 'create /var/www/site/www'
-     file: 'path=/var/www/site/www state=directory'
+     file: 'path={{ root_dir }}/site/www state=directory'
 
    - name: 'create /var/www/site/tmp'
-     file: 'path=/var/www/site/tmp state=directory'
+     file: 'path={{ root_dir }}/site/tmp state=directory'
 
 ##################### Handlers #######################
    handlers:
