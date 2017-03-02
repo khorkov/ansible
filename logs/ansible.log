@@ -1168,3 +1168,108 @@ MODULE FAILURE
 2017-03-02 14:42:22,225 p=3344 u=ressonance |  changed: [95.215.108.41]
 2017-03-02 14:42:22,228 p=3344 u=ressonance |  PLAY RECAP *********************************************************************
 2017-03-02 14:42:22,229 p=3344 u=ressonance |  95.215.108.41              : ok=20   changed=6    unreachable=0    failed=0   
+2017-03-02 18:02:37,721 p=15930 u=ressonance |  PLAY [all] *********************************************************************
+2017-03-02 18:02:37,739 p=15930 u=ressonance |  TASK [ssh default config] ******************************************************
+2017-03-02 18:02:37,936 p=15930 u=ressonance |  fatal: [95.215.108.41]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: Agent admitted failure to sign using the key.\r\nPermission denied (publickey,password).\r\n", "unreachable": true}
+2017-03-02 18:02:37,939 p=15930 u=ressonance |  	to retry, use: --limit @/home/ressonance/ansible/playbooks/playbook.retry
+
+2017-03-02 18:02:37,939 p=15930 u=ressonance |  PLAY RECAP *********************************************************************
+2017-03-02 18:02:37,940 p=15930 u=ressonance |  95.215.108.41              : ok=0    changed=0    unreachable=1    failed=0   
+2017-03-02 18:05:18,472 p=16084 u=ressonance |  PLAY [all] *********************************************************************
+2017-03-02 18:05:18,493 p=16084 u=ressonance |  TASK [ssh default config] ******************************************************
+2017-03-02 18:05:21,700 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:05:21,703 p=16084 u=ressonance |  TASK [iptables default config] *************************************************
+2017-03-02 18:05:23,209 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:05:23,213 p=16084 u=ressonance |  TASK [rc.local default config] *************************************************
+2017-03-02 18:05:24,760 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:05:24,764 p=16084 u=ressonance |  TASK [installing python-software-properties] ***********************************
+2017-03-02 18:06:53,064 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:06:53,065 p=16084 u=ressonance |  TASK [apt_repository] **********************************************************
+2017-03-02 18:07:28,661 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:07:28,664 p=16084 u=ressonance |  TASK [installing mysql] ********************************************************
+2017-03-02 18:10:22,762 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:10:22,764 p=16084 u=ressonance |  TASK [installing packages] *****************************************************
+2017-03-02 18:14:07,756 p=16084 u=ressonance |  changed: [95.215.108.41] => (item=[u'git', u'curl', u'nodejs', u'nginx', u'php5-fpm', u'php5-mcrypt', u'php5-mysql', u'php5-curl', u'php-db', u'php5-gd', u'unzip', u'zip', u'mc', u'htop', u'sendmail'])
+2017-03-02 18:14:07,760 p=16084 u=ressonance |  TASK [nginx default host] ******************************************************
+2017-03-02 18:14:09,250 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:09,251 p=16084 u=ressonance |  TASK [php5 default config] *****************************************************
+2017-03-02 18:14:10,877 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:10,880 p=16084 u=ressonance |  TASK [nginx default config] ****************************************************
+2017-03-02 18:14:12,282 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:12,284 p=16084 u=ressonance |  TASK [nginx fastcgi_params] ****************************************************
+2017-03-02 18:14:13,848 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:13,850 p=16084 u=ressonance |  TASK [add nginx host] **********************************************************
+2017-03-02 18:14:15,179 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:15,184 p=16084 u=ressonance |  TASK [link to nginx host] ******************************************************
+2017-03-02 18:14:16,055 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:16,058 p=16084 u=ressonance |  TASK [add php-fpm pool] ********************************************************
+2017-03-02 18:14:17,452 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:17,455 p=16084 u=ressonance |  TASK [timezone php-cli] ********************************************************
+2017-03-02 18:14:18,245 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:18,248 p=16084 u=ressonance |  TASK [create /var/www] *********************************************************
+2017-03-02 18:14:18,944 p=16084 u=ressonance |  ok: [95.215.108.41]
+2017-03-02 18:14:18,948 p=16084 u=ressonance |  TASK [create /var/www/s1] ******************************************************
+2017-03-02 18:14:19,753 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:19,756 p=16084 u=ressonance |  TASK [create /var/www/s1/www] **************************************************
+2017-03-02 18:14:20,541 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:20,543 p=16084 u=ressonance |  TASK [create /var/www/s1/tmp] **************************************************
+2017-03-02 18:14:21,250 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:21,251 p=16084 u=ressonance |  RUNNING HANDLER [ssh restart] **************************************************
+2017-03-02 18:14:24,068 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:24,069 p=16084 u=ressonance |  RUNNING HANDLER [nginx restart] ************************************************
+2017-03-02 18:14:26,343 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:26,344 p=16084 u=ressonance |  RUNNING HANDLER [mysql server install] *****************************************
+2017-03-02 18:14:27,159 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:27,160 p=16084 u=ressonance |  RUNNING HANDLER [php-fpm restart] **********************************************
+2017-03-02 18:14:29,439 p=16084 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:14:29,441 p=16084 u=ressonance |  PLAY RECAP *********************************************************************
+2017-03-02 18:14:29,441 p=16084 u=ressonance |  95.215.108.41              : ok=23   changed=22   unreachable=0    failed=0   
+2017-03-02 18:25:43,558 p=18296 u=ressonance |  PLAY [all] *********************************************************************
+2017-03-02 18:25:43,578 p=18296 u=ressonance |  TASK [ssh default config] ******************************************************
+2017-03-02 18:25:46,993 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:25:46,996 p=18296 u=ressonance |  TASK [iptables default config] *************************************************
+2017-03-02 18:25:48,485 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:25:48,488 p=18296 u=ressonance |  TASK [rc.local default config] *************************************************
+2017-03-02 18:25:50,030 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:25:50,033 p=18296 u=ressonance |  TASK [installing python-software-properties] ***********************************
+2017-03-02 18:27:17,551 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:27:17,555 p=18296 u=ressonance |  TASK [apt_repository] **********************************************************
+2017-03-02 18:27:48,234 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:27:48,238 p=18296 u=ressonance |  TASK [installing mysql] ********************************************************
+2017-03-02 18:30:35,741 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:30:35,744 p=18296 u=ressonance |  TASK [installing packages] *****************************************************
+2017-03-02 18:33:30,431 p=18296 u=ressonance |  changed: [95.215.108.41] => (item=[u'git', u'curl', u'nodejs', u'nginx', u'php5-fpm', u'php5-mcrypt', u'php5-mysql', u'php5-curl', u'php-db', u'php5-gd', u'unzip', u'zip', u'mc', u'htop', u'sendmail'])
+2017-03-02 18:33:30,436 p=18296 u=ressonance |  TASK [nginx default host] ******************************************************
+2017-03-02 18:33:31,955 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:31,957 p=18296 u=ressonance |  TASK [php5 default config] *****************************************************
+2017-03-02 18:33:33,369 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:33,373 p=18296 u=ressonance |  TASK [nginx default config] ****************************************************
+2017-03-02 18:33:34,866 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:34,870 p=18296 u=ressonance |  TASK [nginx fastcgi_params] ****************************************************
+2017-03-02 18:33:36,519 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:36,523 p=18296 u=ressonance |  TASK [add nginx host] **********************************************************
+2017-03-02 18:33:38,130 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:38,133 p=18296 u=ressonance |  TASK [link to nginx host] ******************************************************
+2017-03-02 18:33:39,027 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:39,031 p=18296 u=ressonance |  TASK [add php-fpm pool] ********************************************************
+2017-03-02 18:33:40,661 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:40,664 p=18296 u=ressonance |  TASK [timezone php-cli] ********************************************************
+2017-03-02 18:33:41,419 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:41,421 p=18296 u=ressonance |  TASK [create /var/www] *********************************************************
+2017-03-02 18:33:42,041 p=18296 u=ressonance |  ok: [95.215.108.41]
+2017-03-02 18:33:42,044 p=18296 u=ressonance |  TASK [create /var/www/s1] ******************************************************
+2017-03-02 18:33:42,649 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:42,652 p=18296 u=ressonance |  TASK [create /var/www/s1/www] **************************************************
+2017-03-02 18:33:43,331 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:43,335 p=18296 u=ressonance |  TASK [create /var/www/s1/tmp] **************************************************
+2017-03-02 18:33:44,021 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:44,023 p=18296 u=ressonance |  RUNNING HANDLER [ssh restart] **************************************************
+2017-03-02 18:33:46,444 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:46,444 p=18296 u=ressonance |  RUNNING HANDLER [nginx restart] ************************************************
+2017-03-02 18:33:48,523 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:48,523 p=18296 u=ressonance |  RUNNING HANDLER [mysql server install] *****************************************
+2017-03-02 18:33:49,740 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:49,741 p=18296 u=ressonance |  RUNNING HANDLER [php-fpm restart] **********************************************
+2017-03-02 18:33:51,944 p=18296 u=ressonance |  changed: [95.215.108.41]
+2017-03-02 18:33:51,948 p=18296 u=ressonance |  PLAY RECAP *********************************************************************
+2017-03-02 18:33:51,949 p=18296 u=ressonance |  95.215.108.41              : ok=23   changed=22   unreachable=0    failed=0   
