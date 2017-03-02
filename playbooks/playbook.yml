@@ -6,8 +6,8 @@
    vars_files: 
     - '../vars/password_mysql.yml'
 
-    vars:
-      root_dir: /var/www
+   vars:
+    root_dir: /var/www
     
    tasks:
 
@@ -34,8 +34,10 @@
        
    - name: 'installing packages'
      action: 'apt name={{ item }} state=latest update_cache=yes'
-     with_items: 
-      - 'mc'
+     with_items:
+      - 'git'
+      - 'curl'
+      - 'nodejs'
       - 'nginx'
       - 'php5-fpm'
       - 'php5-mcrypt'
@@ -45,6 +47,7 @@
       - 'php5-gd'
       - 'unzip'
       - 'zip'
+      - 'mc'
       - 'htop'
       - 'sendmail'
 
@@ -62,15 +65,15 @@
      template: 'src=../templates/nginx/fastcgi_params.j2 dest=/etc/nginx/fastcgi_params'
 
    - name: 'add nginx host'
-     template: 'src=../templates/nginx/site.conf.j2 dest=/etc/nginx/sites-available/site.conf'
+     template: 'src=../templates/nginx/s1.conf.j2 dest=/etc/nginx/sites-available/s1.conf'
 
    - name: 'link to nginx host'
-     file: 'src=/etc/nginx/sites-available/site.conf dest=/etc/nginx/sites-enabled/site.conf state=link'
+     file: 'src=/etc/nginx/sites-available/s1.conf dest=/etc/nginx/sites-enabled/s1.conf state=link'
      notify:
      - 'nginx restart'
 
    - name: 'add php-fpm pool'
-     template: 'src=../templates/php5/fpm/site.conf.j2 dest=/etc/php5/fpm/pool.d/site.conf'
+     template: 'src=../templates/php5/fpm/s1.conf.j2 dest=/etc/php5/fpm/pool.d/s1.conf'
      notify:
      - 'php-fpm restart'
 
@@ -81,14 +84,14 @@
    - name: 'create /var/www'   
      file: 'path={{ root_dir }} state=directory'
 
-   - name: 'create /var/www/site'
-     file: 'path={{ root_dir }}/site state=directory'
+   - name: 'create /var/www/s1'
+     file: 'path={{ root_dir }}/s1 state=directory'
 
-   - name: 'create /var/www/site/www'
-     file: 'path={{ root_dir }}/site/www state=directory'
+   - name: 'create /var/www/s1/www'
+     file: 'path={{ root_dir }}/s1/www state=directory'
 
-   - name: 'create /var/www/site/tmp'
-     file: 'path={{ root_dir }}/site/tmp state=directory'
+   - name: 'create /var/www/s1/tmp'
+     file: 'path={{ root_dir }}/s1/tmp state=directory'
 
 ##################### Handlers #######################
    handlers:
