@@ -1,0 +1,14 @@
+[deploy]
+listen = /var/run/php5-s1.sock
+listen.mode = 0666
+user = deploy
+group = deploy
+chdir = /var/www/s1
+php_admin_value[upload_tmp_dir] = /var/www/s1/tmp
+php_admin_value[soap.wsdl_cache_dir] = /var/www/s1/tmp
+php_admin_value[date.timezone] = Europe/Moscow
+pm = dynamic
+pm.max_children = 10
+pm.start_servers = 2
+pm.min_spare_servers = 2
+pm.max_spare_servers = 4

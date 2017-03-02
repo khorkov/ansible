@@ -1,0 +1,37 @@
+upstream backend-s1 {server unix:/var/run/php5-s1.sock;}
+server { 
+            listen 80;
+            server_name www.s1;
+            rewrite ^ http://s1$request_uri? permanent;
+}
+server {
+    listen              80;
+    server_name         ezubr.ru;
+    root                /var/www/s1/www;
+    access_log          /var/log/nginx/s1-access.log;
+    error_log           /var/log/nginx/s1-error.log;
+    index               index.php index.html;
+    rewrite_log         on;
+    location /core/ {                                                                                                                                                                                                                               
+        deny all;                                                                                                                                                                                                                                                    
+    }
+    location / {
+        try_files       $uri $uri/ @rewrite;
+    }
+    location @rewrite {
+        rewrite         ^/(.*)$ /index.php?q=$1;
+    }
+    location ~ \.php$ {
+        include         fastcgi_params;
+        fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass    backend-s1;
+    }
+    location ~* ^.+\.(jpg|jpeg|gif|css|png|js|ico|bmp)$ {
+       access_log       off;
+       expires          10d;
+       break;
+    }
+    location ~ /\.ht {
+        deny            all;
+    }
+}
