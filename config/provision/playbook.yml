@@ -1,0 +1,136 @@
+---
+- hosts: 'all'
+  remote_user: 'root'
+
+# В данном блоке объявляются переменные, которые будут использоваться в playbook и конфигах, представленных выше
+  vars_files: 
+    - 'vars/passwd_mysql.yml'
+
+  vars:
+    user: 'deploy'
+    home: '/home/{{ user }}'
+    name: 's1'
+    application: '/var/www/{{ name }}'
+
+# Список задач, которые будут выполнены последовательно
+  tasks:
+# Подключаем и обновляем репозитории
+    - include: tasks/repo.yml
+
+# Обновление кеша и установка необходимых пакетов, всего программного обеспечения,
+# необходимого для работы нашего сервера
+    - name: 'apt | update'
+      action: 'apt update_cache=yes'
+
+# Настройка безопасности
+    - name: 'ssh | copy config'
+      copy: 'src=configs/ssh/sshd_config dest=/etc/ssh/sshd_config owner=root group=root mode=0644'
+      notify:
+      - 'ssh restart'
+
+    - name: 'iptables | copy config'
+      copy: 'src=configs/iptables/iptables dest=/root/iptables owner=root group=root mode=0644'
+
+    - file:
+        path: /root/iptables
+        state: file
+        mode: "u=rwx,g=r,o=r"      
+
+    - name: 'rc.local | copy config'
+      copy: 'src=configs/iptables/rc.local dest=/etc/rc.local owner=root group=root mode=0644'
+
+# Установка пакетов
+    - name: 'installing mysql'
+      apt: 'name=mysql-server'
+      notify: 
+      - 'mysql server install'
+       
+    - name: 'apt | install dependencies'
+      action: 'apt pkg={{ item }}'
+      with_items:
+        - 'git'
+        - 'nginx'
+        - 'php5-fpm'
+        - 'php5-mcrypt'
+        - 'php5-mysql'
+        - 'php5-curl'
+        - 'php-db'
+        - 'php5-gd'
+        - 'unzip'
+        - 'zip'
+        - 'htop'
+        - 'mc'
+
+# Создаём нашего пользователя deploy, копируем авторизационный ключ, а так же публичный и приватный ssh ключи
+    - name: 'account | create'
+      user: 'name={{ user }} shell=/bin/bash'
+
+    - name: 'account | copy authorized keys'
+      shell: 'mkdir -p {{ home }}/.ssh -m 700 && cp /root/.ssh/authorized_keys {{ home }}/.ssh && chown -R {{ user }}:{{ user }} {{ home }}/.ssh'
+
+    - name: 'account | copy ssh private key'
+      copy: 'src=keys/id_rsa dest={{ home }}/.ssh/id_rsa owner={{ user }} group={{ user }} mode=0600'
+
+    - name: 'account | copy ssh public key'
+      copy: 'src=keys/id_rsa.pub dest={{ home }}/.ssh/id_rsa.pub owner={{ user }} group={{ user }} mode=0644'
+
+# Установка и настройка веб сервера nginx
+    - name: 'nginx | copy config'
+      template: 'src=configs/nginx/nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644'
+
+    - name: 'fastcgi_params | copy config'
+      template: 'src=configs/nginx/fastcgi_params dest=/etc/nginx/fastcgi_params owner=root group=root mode=0644'
+
+    - name: 'add host | copy config'
+      template: 'src=configs/nginx/s1.conf dest=/etc/nginx/sites-available/s1.conf owner=root group=root mode=0644'
+
+    - name: 'link to host | copy config'
+      file: 'src=/etc/nginx/sites-available/s1.conf dest=/etc/nginx/sites-enabled/s1.conf state=link'
+      notify:
+      - 'nginx restart'
+
+# Установка и настройка php
+    - name: 'php5 | copy config'
+      copy: 'src=configs/php5/fpm/php.ini dest=/etc/php5/fpm/php.ini owner=root group=root mode=0644'
+
+    - name: 'add php5 pool | copy config'
+      template: 'src=configs/php5/fpm/s1.conf dest=/etc/php5/fpm/pool.d/s1.conf owner=root group=root mode=0644'
+      notify:
+      - 'php-fpm restart'
+
+# Настройка часового пояса
+    - name: 'timezone php-cli'
+      replace: 'dest=/etc/php5/cli/php.ini regexp="^;date.timezone =$" replace="date.timezone = Europe/Moscow"'
+      
+# Создаем папки
+    - name: 'create /var/www'   
+      file: 'path=/var/www state=directory'
+
+    - name: 'create /var/www/s1'
+      file: 'path={{ application }} state=directory'
+
+    - name: 'create /var/www/s1/www'
+      file: 'path={{ application }}/www state=directory'
+
+    - name: 'create /var/www/s1/tmp'
+      file: 'path={{ application }}/tmp state=directory'
+
+    - name: change access mode
+      shell: 'usermod -d {{ application }} {{ user }}'
+
+    - name: 'nginx | deletedir'
+      shell: 'rm -r /var/www/html'
+
+# Обработчики
+  handlers:
+  - name: 'ssh restart'
+    service: 'name=ssh state=restarted'
+
+  - name: 'mysql server install'
+    command: 'mysqladmin -u root password {{ mysql_root_pass }}'
+
+  - name: 'nginx restart'
+    service: 'name=nginx state=restarted'
+
+  - name: 'php-fpm restart'
+    service: 'name=php5-fpm state=restarted'
